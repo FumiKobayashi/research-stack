@@ -120,6 +120,63 @@ describe('Research skill validation', () => {
   });
 });
 
+describe('Cross-skill data chain', () => {
+  const skillDirs = ['hypothesis', 'run-experiment', 'report', 'discuss', 'peer-review'];
+
+  test('all 5 skills use AskUserQuestion (human-in-the-loop)', () => {
+    for (const dir of skillDirs) {
+      const content = fs.readFileSync(path.join(ROOT, dir, 'SKILL.md'), 'utf-8');
+      expect(content).toContain('AskUserQuestion');
+    }
+  });
+
+  test('all 5 skills include learnings-log for knowledge capture', () => {
+    for (const dir of skillDirs) {
+      const content = fs.readFileSync(path.join(ROOT, dir, 'SKILL.md'), 'utf-8');
+      expect(content).toContain('learnings-log');
+    }
+  });
+
+  test('run-experiment has mandatory approval gate before execution', () => {
+    const content = fs.readFileSync(path.join(ROOT, 'run-experiment', 'SKILL.md'), 'utf-8');
+    expect(content).toContain('APPROVAL GATE');
+    expect(content).toContain('AskUserQuestion');
+    // Approval must appear before Phase B (execution)
+    const approvalIdx = content.indexOf('APPROVAL GATE');
+    const phaseBIdx = content.indexOf('Phase B');
+    expect(approvalIdx).toBeLessThan(phaseBIdx);
+  });
+
+  test('provenance fields in run-experiment match report references', () => {
+    const runExp = fs.readFileSync(path.join(ROOT, 'run-experiment', 'SKILL.md'), 'utf-8');
+    const report = fs.readFileSync(path.join(ROOT, 'report', 'SKILL.md'), 'utf-8');
+    // Both skills reference the same artifact files
+    for (const artifact of ['metrics.json', 'provenance.json']) {
+      expect(runExp).toContain(artifact);
+      expect(report).toContain(artifact);
+    }
+  });
+
+  test('hypothesis output connects to run-experiment input (spec.yaml)', () => {
+    const hypothesis = fs.readFileSync(path.join(ROOT, 'hypothesis', 'SKILL.md'), 'utf-8');
+    const runExp = fs.readFileSync(path.join(ROOT, 'run-experiment', 'SKILL.md'), 'utf-8');
+    expect(hypothesis).toContain('spec.yaml');
+    expect(runExp).toContain('spec.yaml');
+  });
+
+  test('discuss references experiment data for grounded analysis', () => {
+    const discuss = fs.readFileSync(path.join(ROOT, 'discuss', 'SKILL.md'), 'utf-8');
+    expect(discuss).toContain('Data ref');
+    expect(discuss).toContain('metrics');
+  });
+
+  test('peer-review checks reproducibility via provenance', () => {
+    const review = fs.readFileSync(path.join(ROOT, 'peer-review', 'SKILL.md'), 'utf-8');
+    expect(review).toContain('Reproducibility');
+    expect(review).toContain('provenance');
+  });
+});
+
 describe('Template freshness', () => {
   const templates = [
     'SKILL.md.tmpl',
