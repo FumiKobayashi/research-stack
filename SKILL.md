@@ -1,7 +1,7 @@
 ---
 name: research-stack
 preamble-tier: 1
-version: 0.3.0
+version: 1.0.0
 description: |
   Research computation framework for Claude Code. Structures the hypothesis-experiment-report
   cycle with convention enforcement, provenance tracking, and negative results registry.
@@ -25,13 +25,13 @@ allowed-tools:
 _BRANCH=$(git branch --show-current 2>/dev/null || echo "unknown")
 echo "BRANCH: $_BRANCH"
 # Learnings count
-eval "$(~/.claude/skills/research-stack/bin/gstack-slug 2>/dev/null)" 2>/dev/null || true
-_LEARN_FILE="${GSTACK_HOME:-$HOME/.gstack}/projects/${SLUG:-unknown}/learnings.jsonl"
+eval "$(~/.claude/skills/research-stack/bin/rstack-slug 2>/dev/null)" 2>/dev/null || true
+_LEARN_FILE="${RSTACK_HOME:-$HOME/.research-stack}/projects/${SLUG:-unknown}/learnings.jsonl"
 if [ -f "$_LEARN_FILE" ]; then
   _LEARN_COUNT=$(wc -l < "$_LEARN_FILE" 2>/dev/null | tr -d ' ')
   echo "LEARNINGS: $_LEARN_COUNT entries loaded"
   if [ "$_LEARN_COUNT" -gt 5 ] 2>/dev/null; then
-    ~/.claude/skills/research-stack/bin/gstack-learnings-search --limit 3 2>/dev/null || true
+    ~/.claude/skills/research-stack/bin/rstack-learnings-search --limit 3 2>/dev/null || true
   fi
 else
   echo "LEARNINGS: 0"
@@ -39,7 +39,7 @@ fi
 # Session timeline
 _SESSION_ID="$$-$(date +%s)"
 _TEL_START=$(date +%s)
-~/.claude/skills/research-stack/bin/gstack-timeline-log '{"skill":"research-stack","event":"started","branch":"'"$_BRANCH"'","session":"'"$_SESSION_ID"'"}' 2>/dev/null &
+~/.claude/skills/research-stack/bin/rstack-timeline-log '{"skill":"research-stack","event":"started","branch":"'"$_BRANCH"'","session":"'"$_SESSION_ID"'"}' 2>/dev/null &
 ```
 
 ## Voice
@@ -71,7 +71,7 @@ Before completing, reflect:
 If yes, log an operational learning:
 
 ```bash
-~/.claude/skills/research-stack/bin/gstack-learnings-log '{"skill":"research-stack","type":"operational","key":"SHORT_KEY","insight":"DESCRIPTION","confidence":N,"source":"observed"}'
+~/.claude/skills/research-stack/bin/rstack-learnings-log '{"skill":"research-stack","type":"operational","key":"SHORT_KEY","insight":"DESCRIPTION","confidence":N,"source":"observed"}'
 ```
 
 ### Telemetry (run last)
@@ -79,7 +79,7 @@ If yes, log an operational learning:
 ```bash
 _TEL_END=$(date +%s)
 _TEL_DUR=$(( _TEL_END - _TEL_START ))
-~/.claude/skills/research-stack/bin/gstack-timeline-log '{"skill":"research-stack","event":"completed","branch":"'$(git branch --show-current 2>/dev/null || echo unknown)'","outcome":"OUTCOME","duration_s":"'"$_TEL_DUR"'","session":"'"$_SESSION_ID"'"}' 2>/dev/null || true
+~/.claude/skills/research-stack/bin/rstack-timeline-log '{"skill":"research-stack","event":"completed","branch":"'$(git branch --show-current 2>/dev/null || echo unknown)'","outcome":"OUTCOME","duration_s":"'"$_TEL_DUR"'","session":"'"$_SESSION_ID"'"}' 2>/dev/null || true
 ```
 
 Replace `OUTCOME` with success/error/abort.
@@ -309,18 +309,18 @@ When creating a new hypothesis, it checks for similar past experiments
 Search for relevant learnings from previous sessions:
 
 ```bash
-_CROSS_PROJ=$(~/.claude/skills/research-stack/bin/gstack-config get cross_project_learnings 2>/dev/null || echo "unset")
+_CROSS_PROJ=$(~/.claude/skills/research-stack/bin/rstack-config get cross_project_learnings 2>/dev/null || echo "unset")
 echo "CROSS_PROJECT: $_CROSS_PROJ"
 if [ "$_CROSS_PROJ" = "true" ]; then
-  ~/.claude/skills/research-stack/bin/gstack-learnings-search --limit 10 --cross-project 2>/dev/null || true
+  ~/.claude/skills/research-stack/bin/rstack-learnings-search --limit 10 --cross-project 2>/dev/null || true
 else
-  ~/.claude/skills/research-stack/bin/gstack-learnings-search --limit 10 2>/dev/null || true
+  ~/.claude/skills/research-stack/bin/rstack-learnings-search --limit 10 2>/dev/null || true
 fi
 ```
 
 If `CROSS_PROJECT` is `unset` (first time): Use AskUserQuestion:
 
-> gstack can search learnings from your other projects on this machine to find
+> research-stack can search learnings from your other projects on this machine to find
 > patterns that might apply here. This stays local (no data leaves your machine).
 > Recommended for solo developers. Skip if you work on multiple client codebases
 > where cross-contamination would be a concern.
@@ -329,8 +329,8 @@ Options:
 - A) Enable cross-project learnings (recommended)
 - B) Keep learnings project-scoped only
 
-If A: run `~/.claude/skills/research-stack/bin/gstack-config set cross_project_learnings true`
-If B: run `~/.claude/skills/research-stack/bin/gstack-config set cross_project_learnings false`
+If A: run `~/.claude/skills/research-stack/bin/rstack-config set cross_project_learnings true`
+If B: run `~/.claude/skills/research-stack/bin/rstack-config set cross_project_learnings false`
 
 Then re-run the search with the appropriate flag.
 
@@ -339,5 +339,5 @@ matches a past learning, display:
 
 **"Prior learning applied: [key] (confidence N/10, from [date])"**
 
-This makes the compounding visible. The user should see that gstack is getting
+This makes the compounding visible. The user should see that research-stack is getting
 smarter on their codebase over time.
