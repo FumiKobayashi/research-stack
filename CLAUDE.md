@@ -37,7 +37,7 @@ research-stack/
 │   ├── helpers/     # skill-parser.ts
 │   ├── skill-validation.test.ts  # Static validation
 │   └── gen-skill-docs.test.ts    # Generator quality checks
-├── bin/             # CLI utilities (gstack-learnings-log, gstack-config, etc.)
+├── bin/             # CLI utilities (rstack-learnings-log, rstack-config, etc.)
 ├── lib/             # Shared libraries (worktree.ts)
 ├── .github/         # CI workflows (release, skill-docs freshness, actionlint)
 ├── SKILL.md.tmpl    # Root skill template (edit this, not SKILL.md)

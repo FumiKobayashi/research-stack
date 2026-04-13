@@ -17,6 +17,11 @@
   "engines": {
     "bun": ">=1.0.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FumiKobayashi/research-stack.git"
+  },
+  "homepage": "https://github.com/FumiKobayashi/research-stack",
   "keywords": [
     "research",
     "computation",

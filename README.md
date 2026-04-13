@@ -271,9 +271,7 @@ research-stack/
 
 ## 背景
 
-[gstack](https://github.com/garrytan/gstack) (Garry Tan 作の Claude Code スキルパック) をフォークし、Web 開発向け機能 (ブラウザ操作、デザインレビュー、QA、デプロイ等) を全て除去。代わりに数値計算研究のワークフローに特化したスキルを構築しました。
-
-gstack のテンプレートシステム (`.tmpl` → `SKILL.md` 生成パイプライン)、learnings システム、セッション管理はそのまま活用しています。
+[gstack](https://github.com/garrytan/gstack) (Garry Tan 作の Claude Code スキルパック) のテンプレートシステム (`.tmpl` → `SKILL.md` 生成パイプライン)、learnings システム、セッション管理をベースに、数値計算研究のワークフローに特化したスキルを構築しました。
 
 ## ライセンス
 
