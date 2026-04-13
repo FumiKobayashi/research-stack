@@ -1,7 +1,7 @@
 ---
 name: run-experiment
 preamble-tier: 2
-version: 0.3.0
+version: 1.0.0
 description: |
   Generate convention-compliant experiment code from a spec, get researcher approval,
   then execute with full provenance tracking. Two-phase workflow: generate → approve → run.
@@ -210,7 +210,7 @@ Verify:
 
 ```bash
 {{SLUG_EVAL}}
-_LEARN_FILE="${GSTACK_HOME:-$HOME/.gstack}/projects/${SLUG:-unknown}/learnings.jsonl"
+_LEARN_FILE="${RSTACK_HOME:-$HOME/.research-stack}/projects/${SLUG:-unknown}/learnings.jsonl"
 mkdir -p "$(dirname "$_LEARN_FILE")"
 echo '{"type":"result","slug":"<slug>","success":true,"summary":"<brief_summary>","ts":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'"}' >> "$_LEARN_FILE"
 ```

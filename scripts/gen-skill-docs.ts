@@ -43,13 +43,11 @@ let HOST: Host = HOST_ARG_VAL === 'all' ? 'claude' : HOST_ARG_VAL;
 // Re-export local copy for use in this file (matches codex-helpers.ts)
 // Accepts optional frontmatter name to support directory/invocation name divergence
 function externalSkillName(skillDir: string, frontmatterName?: string): string {
-  // Root skill (skillDir === '' or '.') always maps to 'gstack' regardless of frontmatter
-  if (skillDir === '.' || skillDir === '') return 'gstack';
-  // Use frontmatter name when it differs from directory name (e.g., run-tests/ with name: test)
+  // Root skill (skillDir === '' or '.') maps to 'research-stack'
+  if (skillDir === '.' || skillDir === '') return 'research-stack';
+  // Use frontmatter name when it differs from directory name
   const baseName = frontmatterName && frontmatterName !== skillDir ? frontmatterName : skillDir;
-  // Don't double-prefix: gstack-upgrade → gstack-upgrade (not gstack-gstack-upgrade)
-  if (baseName.startsWith('gstack-')) return baseName;
-  return `gstack-${baseName}`;
+  return baseName;
 }
 
 function extractNameAndDescription(content: string): { name: string; description: string } {
@@ -253,9 +251,8 @@ function processExternalHost(
   }
 
   // Replace hardcoded Claude paths with host-appropriate paths
-  result = result.replace(/~\/\.claude\/skills\/gstack/g, ctx.paths.skillRoot);
-  result = result.replace(/\.claude\/skills\/gstack/g, ctx.paths.localSkillRoot);
-  result = result.replace(/\.claude\/skills\/review/g, `${config.hostSubdir}/skills/gstack/review`);
+  result = result.replace(/~\/\.claude\/skills\/research-stack/g, ctx.paths.skillRoot);
+  result = result.replace(/\.claude\/skills\/research-stack/g, ctx.paths.localSkillRoot);
   result = result.replace(/\.claude\/skills/g, `${config.hostSubdir}/skills`);
 
   // Factory-only: translate Claude Code tool names to generic phrasing
@@ -434,7 +431,7 @@ if (failures.length > 0 && HOST_ARG_VAL === 'all') {
 // After all hosts processed, warn if prefix patches may need re-applying
 if (!DRY_RUN) {
   try {
-    const configPath = path.join(process.env.HOME || '', '.gstack', 'config.yaml');
+    const configPath = path.join(process.env.HOME || '', '.research-stack', 'config.yaml');
     if (fs.existsSync(configPath)) {
       const config = fs.readFileSync(configPath, 'utf-8');
       if (/^skill_prefix:\s*true/m.test(config)) {

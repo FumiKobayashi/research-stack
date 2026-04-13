@@ -1,6 +1,6 @@
 {
   "name": "research-stack",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "Research computation skills for Claude Code — hypothesis, experiment, report workflow with convention enforcement and provenance tracking.",
   "license": "MIT",
   "type": "module",
@@ -17,6 +17,11 @@
   "engines": {
     "bun": ">=1.0.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FumiKobayashi/research-stack.git"
+  },
+  "homepage": "https://github.com/FumiKobayashi/research-stack",
   "keywords": [
     "research",
     "computation",

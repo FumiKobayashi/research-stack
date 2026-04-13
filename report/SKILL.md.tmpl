@@ -1,7 +1,7 @@
 ---
 name: report
 preamble-tier: 2
-version: 0.3.0
+version: 1.0.0
 description: |
   Analyze experiment results, compare against baselines, generate plots,
   and produce a structured research report. Connects results back to the
@@ -254,7 +254,7 @@ Record positive result to learnings.
 **If C (Dead end):**
 ```bash
 {{SLUG_EVAL}}
-_LEARN_FILE="${GSTACK_HOME:-$HOME/.gstack}/projects/${SLUG:-unknown}/learnings.jsonl"
+_LEARN_FILE="${RSTACK_HOME:-$HOME/.research-stack}/projects/${SLUG:-unknown}/learnings.jsonl"
 echo '{"type":"dead-end","slug":"<slug>","reason":"<why it failed>","ts":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'"}' >> "$_LEARN_FILE"
 ```
 

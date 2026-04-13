@@ -1,7 +1,7 @@
 ---
 name: peer-review
 preamble-tier: 2
-version: 0.3.0
+version: 1.0.0
 description: |
   AI-powered critical review of experiment implementation and results. Acts as
   a skeptical reviewer checking methodology, statistics, code quality,
@@ -266,7 +266,7 @@ provenance, etc. Even a REJECT should note positive aspects.>
 
 ```bash
 {{SLUG_EVAL}}
-_LEARN_FILE="${GSTACK_HOME:-$HOME/.gstack}/projects/${SLUG:-unknown}/learnings.jsonl"
+_LEARN_FILE="${RSTACK_HOME:-$HOME/.research-stack}/projects/${SLUG:-unknown}/learnings.jsonl"
 mkdir -p "$(dirname "$_LEARN_FILE")"
 echo '{"type":"peer-review","slug":"<slug>","verdict":"<verdict>","critical":<N>,"major":<N>,"minor":<N>,"ts":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'"}' >> "$_LEARN_FILE"
 ```

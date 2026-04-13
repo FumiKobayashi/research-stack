@@ -1,7 +1,7 @@
 ---
 name: run-experiment
 preamble-tier: 2
-version: 0.3.0
+version: 1.0.0
 description: |
   Generate convention-compliant experiment code from a spec, get researcher approval,
   then execute with full provenance tracking. Two-phase workflow: generate → approve → run.
@@ -25,13 +25,13 @@ allowed-tools:
 _BRANCH=$(git branch --show-current 2>/dev/null || echo "unknown")
 echo "BRANCH: $_BRANCH"
 # Learnings count
-eval "$(~/.claude/skills/research-stack/bin/gstack-slug 2>/dev/null)" 2>/dev/null || true
-_LEARN_FILE="${GSTACK_HOME:-$HOME/.gstack}/projects/${SLUG:-unknown}/learnings.jsonl"
+eval "$(~/.claude/skills/research-stack/bin/rstack-slug 2>/dev/null)" 2>/dev/null || true
+_LEARN_FILE="${RSTACK_HOME:-$HOME/.research-stack}/projects/${SLUG:-unknown}/learnings.jsonl"
 if [ -f "$_LEARN_FILE" ]; then
   _LEARN_COUNT=$(wc -l < "$_LEARN_FILE" 2>/dev/null | tr -d ' ')
   echo "LEARNINGS: $_LEARN_COUNT entries loaded"
   if [ "$_LEARN_COUNT" -gt 5 ] 2>/dev/null; then
-    ~/.claude/skills/research-stack/bin/gstack-learnings-search --limit 3 2>/dev/null || true
+    ~/.claude/skills/research-stack/bin/rstack-learnings-search --limit 3 2>/dev/null || true
   fi
 else
   echo "LEARNINGS: 0"
@@ -39,7 +39,7 @@ fi
 # Session timeline
 _SESSION_ID="$$-$(date +%s)"
 _TEL_START=$(date +%s)
-~/.claude/skills/research-stack/bin/gstack-timeline-log '{"skill":"run-experiment","event":"started","branch":"'"$_BRANCH"'","session":"'"$_SESSION_ID"'"}' 2>/dev/null &
+~/.claude/skills/research-stack/bin/rstack-timeline-log '{"skill":"run-experiment","event":"started","branch":"'"$_BRANCH"'","session":"'"$_SESSION_ID"'"}' 2>/dev/null &
 ```
 
 ## Voice
@@ -58,8 +58,8 @@ Name the file, the function, the exact parameter. No filler.
 After compaction or at session start, check for recent project artifacts:
 
 ```bash
-eval "$(~/.claude/skills/research-stack/bin/gstack-slug 2>/dev/null)"
-_PROJ="${GSTACK_HOME:-$HOME/.gstack}/projects/${SLUG:-unknown}"
+eval "$(~/.claude/skills/research-stack/bin/rstack-slug 2>/dev/null)"
+_PROJ="${RSTACK_HOME:-$HOME/.research-stack}/projects/${SLUG:-unknown}"
 if [ -d "$_PROJ" ]; then
   echo "--- RECENT ARTIFACTS ---"
   [ -f "$_PROJ/timeline.jsonl" ] && tail -5 "$_PROJ/timeline.jsonl"
@@ -131,7 +131,7 @@ Before completing, reflect:
 If yes, log an operational learning:
 
 ```bash
-~/.claude/skills/research-stack/bin/gstack-learnings-log '{"skill":"run-experiment","type":"operational","key":"SHORT_KEY","insight":"DESCRIPTION","confidence":N,"source":"observed"}'
+~/.claude/skills/research-stack/bin/rstack-learnings-log '{"skill":"run-experiment","type":"operational","key":"SHORT_KEY","insight":"DESCRIPTION","confidence":N,"source":"observed"}'
 ```
 
 ### Telemetry (run last)
@@ -139,7 +139,7 @@ If yes, log an operational learning:
 ```bash
 _TEL_END=$(date +%s)
 _TEL_DUR=$(( _TEL_END - _TEL_START ))
-~/.claude/skills/research-stack/bin/gstack-timeline-log '{"skill":"run-experiment","event":"completed","branch":"'$(git branch --show-current 2>/dev/null || echo unknown)'","outcome":"OUTCOME","duration_s":"'"$_TEL_DUR"'","session":"'"$_SESSION_ID"'"}' 2>/dev/null || true
+~/.claude/skills/research-stack/bin/rstack-timeline-log '{"skill":"run-experiment","event":"completed","branch":"'$(git branch --show-current 2>/dev/null || echo unknown)'","outcome":"OUTCOME","duration_s":"'"$_TEL_DUR"'","session":"'"$_SESSION_ID"'"}' 2>/dev/null || true
 ```
 
 Replace `OUTCOME` with success/error/abort.
@@ -408,7 +408,7 @@ If you discovered a non-obvious pattern, pitfall, or architectural insight durin
 this session, log it for future sessions:
 
 ```bash
-~/.claude/skills/research-stack/bin/gstack-learnings-log '{"skill":"run-experiment","type":"TYPE","key":"SHORT_KEY","insight":"DESCRIPTION","confidence":N,"source":"SOURCE","files":["path/to/relevant/file"]}'
+~/.claude/skills/research-stack/bin/rstack-learnings-log '{"skill":"run-experiment","type":"TYPE","key":"SHORT_KEY","insight":"DESCRIPTION","confidence":N,"source":"SOURCE","files":["path/to/relevant/file"]}'
 ```
 
 **Types:** `pattern` (reusable approach), `pitfall` (what NOT to do), `preference`
@@ -428,8 +428,8 @@ staleness detection: if those files are later deleted, the learning can be flagg
 already knows. A good test: would this insight save time in a future session? If yes, log it.
 
 ```bash
-eval "$(~/.claude/skills/research-stack/bin/gstack-slug 2>/dev/null)"
-_LEARN_FILE="${GSTACK_HOME:-$HOME/.gstack}/projects/${SLUG:-unknown}/learnings.jsonl"
+eval "$(~/.claude/skills/research-stack/bin/rstack-slug 2>/dev/null)"
+_LEARN_FILE="${RSTACK_HOME:-$HOME/.research-stack}/projects/${SLUG:-unknown}/learnings.jsonl"
 mkdir -p "$(dirname "$_LEARN_FILE")"
 echo '{"type":"result","slug":"<slug>","success":true,"summary":"<brief_summary>","ts":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'"}' >> "$_LEARN_FILE"
 ```
