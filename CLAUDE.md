@@ -56,7 +56,7 @@ research-stack provides 5 skills for the hypothesis-experiment-report cycle:
 5. `/peer-review` — critical review of methodology, statistics, and conclusions
 
 All experiment artifacts follow the `research/` directory structure:
-`research/{hypotheses, specs, results, reports, discussions, reviews}/`.
+`research/{hypotheses, experiments, results, baselines, reports, discussions, reviews}/`.
 
 ## Research conventions
 

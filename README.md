@@ -190,12 +190,14 @@ research/
   experiments/         # 実験ごとのディレクトリ
     <slug>/
       spec.yaml        # 実験仕様
-      run.py           # 実験コード
-      research-log.json  # リサーチログ (再現用記録)
+      run_<slug>.py    # 実験コード
   results/
     <slug>/
-      metrics.json     # 実験結果
       <timestamp>/     # タイムスタンプ付き結果
+        metrics.json         # 実験結果
+        research-log.json    # リサーチログ (再現用記録)
+        plots/               # matplotlib プロット
+      latest -> <timestamp>  # 最新実行へのシンボリックリンク
   baselines/
     <slug>/
       metrics.json     # ベースライン値
@@ -216,13 +218,16 @@ research/
 ```json
 {
   "git_sha": "abc1234",
-  "experiment_spec": "spec.yaml の内容",
-  "package_versions": {"numpy": "1.26.0", "stim": "1.14.0"},
-  "random_seeds": [42, 123, 456],
-  "wall_clock_seconds": 142.3,
+  "git_dirty": false,
+  "branch": "main",
   "timestamp": "2026-04-07T10:30:00Z",
-  "compute_backend": "local",
-  "hostname": "researcher-mbp"
+  "wall_clock_seconds": 142.3,
+  "packages": {"numpy": "1.26.0", "stim": "1.14.0"},
+  "random_seeds": [42, 123, 456],
+  "python_version": "3.11.9",
+  "platform": "darwin-arm64",
+  "experiment_spec": "research/experiments/threshold-scaling/spec.yaml",
+  "parameters": {"code_distance": 5, "physical_error_rate": 0.005}
 }
 ```
 
