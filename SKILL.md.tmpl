@@ -1,10 +1,10 @@
 ---
 name: research-stack
 preamble-tier: 1
-version: 1.0.0
+version: 1.1.0
 description: |
   Research computation framework for Claude Code. Structures the hypothesis-experiment-report
-  cycle with convention enforcement, provenance tracking, and negative results registry.
+  cycle with convention enforcement, research log tracking, and negative results registry.
   Use when running numerical simulations, parameter sweeps, or hypothesis validation.
 allowed-tools:
   - Bash
@@ -24,7 +24,7 @@ allowed-tools:
 A framework that formalizes the research computation cycle. Five skills, one workflow:
 
 1. **`/hypothesis`** — Structure a research idea into a testable experiment spec
-2. **`/run-experiment`** — Generate convention-compliant code, review, execute, capture provenance
+2. **`/run-experiment`** — Generate convention-compliant code, review, execute, capture research log
 3. **`/report`** — Compare results against baselines, generate plots and analysis
 4. **`/discuss`** — Interactive discussion and annotation of experiment reports
 5. **`/peer-review`** — Critical review of methodology, statistics, code, and conclusions
@@ -51,7 +51,7 @@ When the user's request matches a skill, invoke it via the Skill tool:
 ## Core Principles
 
 1. **Convention enforcement.** All generated code follows the project's conventions from CLAUDE.md.
-2. **Reproducibility by default.** Every run produces a provenance bundle automatically.
+2. **Reproducibility by default.** Every run produces a research log automatically.
 3. **Human-in-the-loop.** The researcher reviews and approves at every stage.
 4. **Failed experiments are data.** The learnings system tracks what didn't work.
 
@@ -59,7 +59,7 @@ When the user's request matches a skill, invoke it via the Skill tool:
 
 {{EXPERIMENT_STRUCTURE}}
 
-{{PROVENANCE_SPEC}}
+{{RESEARCH_LOG_SPEC}}
 
 ## Quick Start
 
