@@ -47,7 +47,7 @@ describe('Research skill validation', () => {
     expect(content).toContain('APPROVAL GATE');
     expect(content).toContain('Phase A');
     expect(content).toContain('Phase B');
-    expect(content).toContain('provenance');
+    expect(content).toContain('research log');
   });
 
   test('report/SKILL.md references baselines and plots', () => {
@@ -55,7 +55,7 @@ describe('Research skill validation', () => {
     expect(content).toContain('baseline');
     expect(content).toContain('matplotlib');
     expect(content).toContain('metrics.json');
-    expect(content).toContain('provenance.json');
+    expect(content).toContain('research-log.json');
   });
 
   test('root SKILL.md has routing rules for all 5 skills', () => {
@@ -67,7 +67,7 @@ describe('Research skill validation', () => {
     expect(content).toContain('/peer-review');
   });
 
-  test('all skills reference provenance spec', () => {
+  test('all skills reference research log spec', () => {
     const runExp = fs.readFileSync(path.join(ROOT, 'run-experiment', 'SKILL.md'), 'utf-8');
     expect(runExp).toContain('git_sha');
     expect(runExp).toContain('wall_clock_seconds');
@@ -147,11 +147,11 @@ describe('Cross-skill data chain', () => {
     expect(approvalIdx).toBeLessThan(phaseBIdx);
   });
 
-  test('provenance fields in run-experiment match report references', () => {
+  test('research log fields in run-experiment match report references', () => {
     const runExp = fs.readFileSync(path.join(ROOT, 'run-experiment', 'SKILL.md'), 'utf-8');
     const report = fs.readFileSync(path.join(ROOT, 'report', 'SKILL.md'), 'utf-8');
     // Both skills reference the same artifact files
-    for (const artifact of ['metrics.json', 'provenance.json']) {
+    for (const artifact of ['metrics.json', 'research-log.json']) {
       expect(runExp).toContain(artifact);
       expect(report).toContain(artifact);
     }
@@ -170,10 +170,10 @@ describe('Cross-skill data chain', () => {
     expect(discuss).toContain('metrics');
   });
 
-  test('peer-review checks reproducibility via provenance', () => {
+  test('peer-review checks reproducibility via research log', () => {
     const review = fs.readFileSync(path.join(ROOT, 'peer-review', 'SKILL.md'), 'utf-8');
     expect(review).toContain('Reproducibility');
-    expect(review).toContain('provenance');
+    expect(review).toContain('research log');
   });
 
   test('run-experiment creates latest symlink for reliable handoff', () => {

@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'bun:test';
 import type { TemplateContext } from '../scripts/resolvers/types';
 import { HOST_PATHS } from '../scripts/resolvers/types';
-import { generateResearchConventions, generateProvenanceSpec, generateExperimentStructure } from '../scripts/resolvers/research';
+import { generateResearchConventions, generateResearchLogSpec, generateExperimentStructure } from '../scripts/resolvers/research';
 import { generateLearningsSearch, generateLearningsLog } from '../scripts/resolvers/learnings';
 import { generateSlugEval } from '../scripts/resolvers/utility';
 import { generatePreamble } from '../scripts/resolvers/preamble';
@@ -47,8 +47,8 @@ describe('RESEARCH_CONVENTIONS resolver', () => {
   });
 });
 
-describe('PROVENANCE_SPEC resolver', () => {
-  const output = generateProvenanceSpec(mockCtx);
+describe('RESEARCH_LOG_SPEC resolver', () => {
+  const output = generateResearchLogSpec(mockCtx);
 
   test('includes all required JSON fields', () => {
     for (const field of ['git_sha', 'git_dirty', 'branch', 'timestamp', 'wall_clock_seconds', 'random_seeds', 'packages', 'platform', 'experiment_spec', 'parameters']) {
@@ -60,9 +60,14 @@ describe('PROVENANCE_SPEC resolver', () => {
     expect(output).toContain('baseline_ref');
   });
 
-  test('includes capture_provenance Python function', () => {
-    expect(output).toContain('def capture_provenance');
+  test('includes capture_research_log Python function', () => {
+    expect(output).toContain('def capture_research_log');
     expect(output).toContain('import json, subprocess');
+  });
+
+  test('mentions legacy provenance.json fallback for backward compatibility', () => {
+    expect(output).toContain('provenance.json');
+    expect(output).toContain('research-log.json');
   });
 
   test('uses git commands for SHA and dirty state', () => {
