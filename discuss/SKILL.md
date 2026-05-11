@@ -1,7 +1,7 @@
 ---
 name: discuss
 preamble-tier: 2
-version: 1.1.0
+version: 1.2.0
 description: |
   Interactive discussion of experiment reports. Load a completed report and
   its backing data, then have a back-and-forth conversation with the researcher.

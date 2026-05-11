@@ -1,7 +1,7 @@
 ---
 name: report
 preamble-tier: 2
-version: 1.1.0
+version: 1.2.0
 description: |
   Analyze experiment results, compare against baselines, generate plots,
   and produce a structured research report. Connects results back to the
