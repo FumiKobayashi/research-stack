@@ -165,7 +165,11 @@ Show the generated plots to the researcher using the Read tool on each PNG file.
 
 ### Step 6: Generate report
 
-Write `research/reports/<slug>.md`:
+Write `research/reports/<slug>.md` using a **finding-centric** layout. The
+guiding principle: each finding's claim, supporting figure, supporting data,
+and interpretation live in the **same section**. Do not split plots, metrics,
+and discussion into separate top-level sections — that forces the reader to
+jump back and forth to connect a number to its figure to its meaning.
 
 ```markdown
 # Report: <hypothesis title>
@@ -177,44 +181,45 @@ Write `research/reports/<slug>.md`:
 
 ## Summary
 
-<2-3 sentence summary of what was tested and what was found>
+> <one-sentence hypothesis claim, quoted from research/hypotheses/<slug>.md>
 
-## Hypothesis
+**Result:** <CONFIRMED / REJECTED / INCONCLUSIVE> — <one-sentence rationale citing the headline number>
 
-> <claim from hypothesis document>
+| Success Criterion | Threshold | Actual | |
+|---|---|---|---|
+| <criterion> | <threshold> | <actual> | ✅ / ❌ |
 
-**Prediction:** <expected outcome>
-**Result:** <CONFIRMED / REJECTED / INCONCLUSIVE>
+---
 
-## Key Findings
+## Finding 1 — <one-sentence claim as the heading>
 
-1. <finding 1 with specific numbers>
-2. <finding 2 with specific numbers>
-3. <finding 3 with specific numbers>
+<1–3 sentences stating the finding with specific numbers (mean, CI/std, n).>
 
-## Results
+![Figure 1: <short title>](../results/<slug>/<timestamp>/plots/<plot_file>.png)
 
-### Metrics
+*Figure 1. <Self-contained caption: what is plotted on each axis, what the
+reader should look at, sample size, error bar / CI definition. The figure
+should be understandable without the body text above or below it.>*
 
-| Metric | Value | Baseline | Delta |
-|--------|-------|----------|-------|
-| <metric> | <value> | <baseline_value> | <+/-change> |
+**Supporting data**
 
-### Plots
+| | This run | Baseline | Δ |
+|---|---|---|---|
+| <metric cited in the prose> | <value ± std> | <baseline_value> | <±change> |
 
-![Main Results](../results/<slug>/<timestamp>/plots/main_results.png)
+<1–3 sentences of interpretation: why does this finding matter, what in the
+figure or table supports the claim, what caveats apply (range of validity,
+sample size, assumptions). End with the link to the next finding or the
+broader implication.>
 
-<caption and interpretation>
+## Finding 2 — <claim>
 
-![Baseline Comparison](../results/<slug>/<timestamp>/plots/baseline_comparison.png)
+<Same structure: claim → figure + caption → supporting data → interpretation.>
 
-<caption and interpretation>
+<Repeat for each finding. Aim for 2–4 findings — fewer means the analysis is
+shallow, more means the report is fragmented and should be split.>
 
-## Success Criteria
-
-| Criterion | Threshold | Actual | Pass/Fail |
-|-----------|-----------|--------|-----------|
-| <criterion> | <threshold> | <actual> | <PASS/FAIL> |
+---
 
 ## Reproducibility
 
@@ -232,8 +237,24 @@ python research/experiments/<slug>/run_<slug>.py
 
 ## Next Steps
 
-<recommended follow-up experiments or analyses>
+<1–3 follow-up experiments or analyses>
 ```
+
+**Authoring rules:**
+
+1. **One figure per Finding.** If a finding needs two plots, combine them into a
+   single multi-panel figure, or split the finding into two.
+2. **Figure captions are self-contained.** State what is plotted, what to look
+   at, sample size, and error-bar / CI definition. A reader should grasp the
+   figure without scrolling.
+3. **`Supporting data` tables hold only the numbers cited in the finding's
+   prose.** Don't dump the full `metrics.json` — link to it via the `Results`
+   path at the top instead.
+4. **Do not add separate `Key Findings`, `Metrics`, `Plots`, or
+   `Success Criteria` sections.** Findings are the body. The `Summary` table at
+   the top is the only place pass/fail is pre-stated.
+5. **Use `##` for each Finding** so editors and viewers can navigate the report
+   via outline / TOC.
 
 ### Step 7: Outcome assessment
 
