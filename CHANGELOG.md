@@ -1,5 +1,30 @@
 # Changelog
 
+## 1.2.0 — Finding-centric report layout
+
+### What's new
+
+- **Reports now read top-to-bottom.** `/report` writes a finding-centric
+  layout: each finding's claim, supporting figure, supporting data table, and
+  interpretation live in the same section. You no longer have to jump between
+  a `Key Findings` list, a separate `Metrics` table, and a `Plots` gallery to
+  connect a number to its figure to its meaning.
+- **Scannable Summary at the top.** A single `Summary` block now holds the
+  quoted hypothesis, a one-line result (`CONFIRMED` / `REJECTED` /
+  `INCONCLUSIVE`), and a success-criteria pass/fail table. Skim readers get
+  the verdict in one block; deep readers continue into the findings.
+- **Self-contained figures.** Each finding pairs with a numbered figure whose
+  caption states what is plotted, what to look at, the sample size, and the
+  error-bar / CI definition, so the figure is readable without the surrounding
+  prose.
+
+### Internal
+
+- Updated `report/SKILL.md.tmpl` Step 6 with the new layout template and
+  authoring rules. Old `Key Findings`, `Metrics`, `Plots`, and
+  `Success Criteria` sections are absorbed into `Summary` and per-finding
+  sections.
+
 ## 1.1.0 — Rename "provenance" to "research log"
 
 ### What's new
